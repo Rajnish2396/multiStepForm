@@ -1,5 +1,5 @@
 import React from 'react'
-import InputTextField from './formField/inputTextField'
+import InputTextField from './formField/InputTextField'
 
 export default function DocumentCollection() {
   return (
