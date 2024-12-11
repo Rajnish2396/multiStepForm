@@ -1,23 +1,21 @@
 import React from 'react';
 
-export default function InputTextField({ 
-  placeholder, 
+export default function InputFile({ 
+ 
   labelName, 
-  type, 
   name, 
-  id, 
-  inpValue, 
+  id,  
   setInpValue, 
   err 
 }) {
   function inputHandler(e) {
     
-    const { name, value, files } = e.target;
+    const { name, files } = e.target;
     // console.log(e.target.files[0])
 
     setInpValue((prev) => ({
       ...prev,
-      [name]: type === 'file' ? files[0] : value, // Handle file and non-file inputs correctly
+      [name]: files[0], // Handle file and non-file inputs correctly
     }));
   }
 
@@ -28,7 +26,6 @@ export default function InputTextField({
         className="w-full rounded-sm border border-slate-200 outline-0 p-2 md:p-3"
         name={name}
         id={id}
-        value={type !== 'file' ? inpValue[name] || '' : undefined} // Avoid 'value' attribute for file inputs
         onChange={inputHandler}
         type={type}
         placeholder={placeholder}
