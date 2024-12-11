@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import InputTextField from './formField/InputTextField';
 import { Context } from './contexts/Context';
 import InputFile from './formField/InputFile';
+import TextArea from './formField/TextArea';
 
 export default function FormView() {
   const contextData = useContext(Context);
@@ -14,17 +15,33 @@ export default function FormView() {
   const validError = () => {
     const errors = {};
 
-    if (!inpValue.name || inpValue.name.trim().length < 3) {
-      errors.name = 'Name must be at least 3 characters.';
+    // Step 1 Validation
+    if (activeNo === 1) {
+      if (!inpValue.name || inpValue.name.trim().length < 3) {
+        errors.name = 'Name must be at least 3 characters.';
+      }
+      if (!inpValue.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inpValue.email)) {
+        errors.email = 'Invalid email address.';
+      }
+      if (!inpValue.dob) {
+        errors.dob = 'Date of birth is required.';
+      }
+      if (!inpValue.contactNumber || inpValue.contactNumber.length !== 10) {
+        errors.contactNumber = 'Contact number must be 10 digits.';
+      }
     }
-    if (!inpValue.email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inpValue.email)) {
-      errors.email = 'Invalid email address.';
-    }
-    if (!inpValue.dob) {
-      errors.dob = 'Date of birth is required.';
-    }
-    if (!inpValue.contactNumber || inpValue.contactNumber.length !== 10) {
-      errors.contactNumber = 'Contact number must be 10 digits.';
+
+    // Step 2 Validation
+    if (activeNo === 2) {
+      if (!inpValue.markSheet10) {
+        errors.markSheet10 = '10th Marksheet is required.';
+      } 
+      if (!inpValue.markSheet12) {
+        errors.markSheet12 = '12th Marksheet is required.';
+      } 
+      if (!inpValue.graduationMarkSheet) {
+        errors.graduationMarkSheet = 'Graduation Marksheet is required.';
+      }
     }
 
     setError(errors);
@@ -42,9 +59,9 @@ export default function FormView() {
   };
 
   const handlePrevious = () => {
-    setError({})
-    setActiveNo(activeNo - 1)
-  }
+    setError({});
+    setActiveNo(activeNo - 1);
+  };
 
   return (
     <div className="lg:col-span-3 min-h-screen p-3 md:pt-9 md:pb-5 md:px-5">
@@ -103,28 +120,51 @@ export default function FormView() {
               </>
             ) : activeNo === 2 ? (
               <>
-      
-                <InputTextField
-                  placeholder="Attach your 10th Marksheet"
+                <InputFile
+                  placeholder="Attach your 10th Mark Sheet"
                   labelName="10th MarkSheet *"
                   type="file"
                   name="markSheet10"
                   id="markSheet10"
                   setInpValue={setInpValue}
                   err={err.markSheet10}
+                  inpValue={inpValue}
                 />
-                <InputTextField
-                  placeholder="Attach your 12th Marksheet"
+                <InputFile
+                  placeholder="Attach your 12th Mark Sheet"
                   labelName="12th MarkSheet *"
                   type="file"
                   name="markSheet12"
                   id="markSheet12"
                   setInpValue={setInpValue}
                   err={err.markSheet12}
+                  inpValue={inpValue}
+                />
+                <InputFile
+                  placeholder="Attach your Graduation Mark Sheets"
+                  labelName="Graduation MarkSheet *"
+                  type="file"
+                  name="graduationMarkSheet"
+                  id="graduationMarkSheet"
+                  setInpValue={setInpValue}
+                  err={err.graduationMarkSheet}
+                  inpValue={inpValue}
                 />
               </>
             ) : (
-              <p>Step {activeNo}</p>
+              <>
+              
+              <TextArea 
+        placeholder={"Enter a description for the long answer"} 
+        labelName = {"Tell me about a time you were asked to do something you had never done before. How did you react? What did you learn"} 
+        type={"file"} 
+        name="description" 
+        setInpValue={setInpValue}
+        value={inpValue} // Avoid 'value' attribute for file inputs
+        id="description" />
+   
+      
+              </>
             )}
           </div>
 

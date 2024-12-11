@@ -11,13 +11,10 @@ export default function InputTextField({
   err 
 }) {
   function inputHandler(e) {
-    
-    const { name, value, files } = e.target;
-    // console.log(e.target.files[0])
-
+    const { name, value } = e.target;
     setInpValue((prev) => ({
       ...prev,
-      [name]: type === 'file' ? files[0] : value, // Handle file and non-file inputs correctly
+      [name]: type === 'file' ? e.target.files[0] : value, // Handle file and non-file inputs correctly
     }));
   }
 
@@ -28,7 +25,7 @@ export default function InputTextField({
         className="w-full rounded-sm border border-slate-200 outline-0 p-2 md:p-3"
         name={name}
         id={id}
-        value={type !== 'file' ? inpValue[name] || '' : undefined} // Avoid 'value' attribute for file inputs
+        value={inpValue[name]} // Avoid 'value' attribute for file inputs
         onChange={inputHandler}
         type={type}
         placeholder={placeholder}
